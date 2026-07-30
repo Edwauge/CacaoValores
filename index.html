@@ -4,173 +4,752 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cacaovalores — Valor Justo · Mercado Transparente</title>
-    <!-- Tailwind CSS CDN -->
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome para Iconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        cacao: {
-                            900: '#120704',
-                            800: '#1f0d07',
-                            700: '#34160c',
+                        cocoa: {
+                            50: '#faf5f0',
+                            100: '#f3e8dc',
+                            200: '#e5cdb5',
+                            300: '#d2a886',
+                            400: '#bd7d56',
+                            500: '#a35a33',
+                            600: '#8c4528',
+                            700: '#6f3221',
+                            800: '#4e2319',
+                            900: '#361913',
+                            950: '#1e0c08',
                         },
-                        amberGold: '#F59E0B',
-                        emeraldLive: '#10B981'
+                        amberGold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
                     },
                     fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
-        .glass-card {
-            background: rgba(31, 13, 7, 0.75);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(245, 158, 11, 0.15);
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at top center, #2d160e 0%, #170905 100%);
+            color: #f3e8dc;
+            min-height: 100vh;
         }
+
+        .cocoa-glass {
+            background: rgba(45, 22, 14, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(210, 168, 134, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .cocoa-glass-card {
+            background: linear-gradient(135deg, rgba(54, 25, 19, 0.85) 0%, rgba(30, 12, 8, 0.95) 100%);
+            border: 1px solid rgba(212, 141, 88, 0.2);
+        }
+
+        .cocoa-gradient-text {
+            background: linear-gradient(135deg, #fce7f3 0%, #fef3c7 40%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .amber-glow {
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.25);
+        }
+
+        /* Pulse animations */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.15); }
+        }
+        .live-dot {
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+
+        /* Flash background updates when price moves */
+        @keyframes flashUp {
+            0% { background-color: rgba(16, 185, 129, 0.35); color: #34d399; }
+            100% { background-color: transparent; }
+        }
+        @keyframes flashDown {
+            0% { background-color: rgba(239, 68, 68, 0.35); color: #f87171; }
+            100% { background-color: transparent; }
+        }
+
+        .price-flash-up { animation: flashUp 0.8s ease-out; }
+        .price-flash-down { animation: flashDown 0.8s ease-out; }
+
+        /* Smooth SVG Transitions */
+        .svg-smooth-path { transition: d 0.3s linear; }
+        
+        @keyframes chartPulse {
+            0% { r: 5px; opacity: 1; }
+            50% { r: 9px; opacity: 0.6; }
+            100% { r: 5px; opacity: 1; }
+        }
+        .live-chart-node { animation: chartPulse 1.5s infinite ease-in-out; }
+
+        .progress-timer { transition: width 1s linear; }
     </style>
 </head>
-<body class="bg-cacao-900 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
+<body class="antialiased pb-12 selection:bg-amber-600 selection:text-white">
 
-    <!-- Top Navigation Bar -->
-    <header class="border-b border-amber-900/30 bg-cacao-900/90 sticky top-0 z-50 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+    <header class="sticky top-0 z-50 cocoa-glass border-b border-cocoa-700/40 px-4 lg:px-8 py-3 mb-4">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
             
-            <!-- Branding & Logo -->
             <div class="flex items-center gap-3">
-                <div class="h-12 w-12 rounded-xl bg-amber-950/40 p-1 border border-amber-500/20 flex items-center justify-center overflow-hidden shadow-md shadow-amber-500/10">
-                    <!-- Muestra el logo cargado en GitHub -->
-                    <img src="logo.jpg" alt="Logo Cacaovalores" class="h-full w-full object-cover rounded-lg">
+                <div class="w-12 h-12 rounded-xl bg-amber-950/50 p-1 border border-amber-500/30 flex items-center justify-center overflow-hidden shadow-lg shadow-amber-500/10">
+                    <img src="logo.jpg" alt="Logo Cacaovalores" class="h-full w-full object-cover rounded-lg" onerror="this.src='https://via.placeholder.com/48?text=CV'">
                 </div>
                 <div>
-                    <h1 class="font-extrabold text-xl leading-none tracking-tight text-white uppercase">Cacaovalores</h1>
-                    <p class="text-[10px] sm:text-xs text-amberGold font-semibold tracking-wider mt-1">VALOR JUSTO · MERCADO TRANSPARENTE</p>
+                    <h1 class="text-xl font-extrabold tracking-tight text-white uppercase flex items-center gap-2">
+                        CACAOVALORES 
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">100% AUTOMÁTICO</span>
+                    </h1>
+                    <p class="text-xs text-amberGold font-semibold tracking-wider">VALOR JUSTO · MERCADO TRANSPARENTE</p>
                 </div>
             </div>
 
-            <!-- Realtime Status Badge -->
-            <div class="flex items-center gap-3">
-                <span id="connection-status" class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                    <span class="w-2 h-2 rounded-full bg-emeraldLive animate-pulse"></span>
-                    <span id="status-text" class="hidden sm:inline">Conectado (En vivo)</span>
-                </span>
+            <div class="flex items-center gap-3 flex-wrap justify-center">
+                <div class="flex items-center gap-2 bg-cocoa-900/90 border border-cocoa-700/50 px-3 py-1.5 rounded-full text-xs">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 live-dot"></span>
+                    <span class="text-cocoa-200 font-medium">NY ICE (CC):</span>
+                    <span id="headerNyPriceDisplay" class="font-bold text-amberGold-400">$5,244.00 USD/MT</span>
+                </div>
+
+                <div class="flex items-center gap-2 bg-cocoa-900/90 border border-cocoa-700/50 px-3 py-1.5 rounded-full text-xs">
+                    <i class="fa-solid fa-dollar-sign text-emerald-400"></i>
+                    <span class="text-cocoa-200 font-medium">TRM Oficial:</span>
+                    <span id="headerTrmDisplay" class="font-bold text-emerald-400">$3,920 COP</span>
+                </div>
+
+                <div class="flex items-center gap-2 bg-cocoa-900/80 px-3 py-1 rounded-full border border-cocoa-700/60 text-xs">
+                    <span class="text-cocoa-300 font-semibold">Auto-Sync (1s):</span>
+                    <button id="toggleAutoBtn" onclick="toggleAutoRefresh()" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-[11px] transition flex items-center gap-1">
+                        <i class="fa-solid fa-play text-[10px]"></i> <span id="autoBtnText">ACTIVO</span>
+                    </button>
+                </div>
+
+                <button onclick="triggerManualSync()" class="px-3 py-1.5 bg-cocoa-700 hover:bg-cocoa-600 text-cocoa-100 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 active:scale-95 shadow">
+                    <i id="syncIcon" class="fa-solid fa-rotate"></i>
+                    <span>Refrescar</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto mt-2">
+            <div class="flex justify-between items-center text-[10px] text-cocoa-400 mb-1">
+                <span id="autoSyncStatusText"><i class="fa-solid fa-arrows-rotate animate-spin text-emerald-400"></i> Actualizando ticker en tiempo real (1s)...</span>
+                <span>Actualización tick en: <strong id="countdownSecs" class="text-amberGold-400">1s</strong></span>
+            </div>
+            <div class="w-full bg-cocoa-950 h-1 rounded-full overflow-hidden">
+                <div id="syncProgressBar" class="bg-gradient-to-r from-emerald-500 to-amberGold-400 h-full w-full progress-timer"></div>
             </div>
         </div>
     </header>
 
-    <!-- Main Content Grid -->
-    <main class="max-w-7xl mx-auto px-4 py-6 w-full grow grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <main class="max-w-7xl mx-auto px-4 lg:px-8 space-y-6">
 
-        <!-- Banner de Tickers Financieros -->
-        <div class="lg:col-span-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <!-- Ticker 1: NY ICE Cacao -->
-            <div class="glass-card p-4 rounded-2xl flex justify-between items-center">
-                <div>
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Cacao ICE NY (USD/MT)</span>
-                    <div class="text-2xl font-extrabold text-amberGold mt-1" id="val-ny">$9,450.00</div>
+        <div class="cocoa-glass p-4 rounded-2xl border border-cocoa-700/30 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3 w-full md:w-auto">
+                <div class="p-3 bg-amberGold-500/20 text-amberGold-400 rounded-xl border border-amberGold-500/30">
+                    <i class="fa-solid fa-location-dot text-xl"></i>
                 </div>
-                <div class="text-right">
-                    <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-md">+1.8%</span>
+                <div class="flex-1">
+                    <label class="block text-[11px] uppercase tracking-wider text-cocoa-400 font-bold">Región Cacaotera Colombia</label>
+                    <select id="regionSelect" onchange="onRegionChange()" class="mt-0.5 bg-cocoa-950 border border-cocoa-700 rounded-lg px-3 py-1.5 text-xs text-amberGold-300 font-bold focus:outline-none focus:border-amberGold-500 w-full md:w-64">
+                        <option value="santander" selected>Santander (San Vicente / Bucaramanga) [84%]</option>
+                        <option value="huila">Huila (Neiva / Gigante) [83%]</option>
+                        <option value="arauca">Arauca (Saravena / Tame) [82%]</option>
+                        <option value="tumaco">Nariño / Tumaco (Cacao Fino) [86%]</option>
+                        <option value="antioquia">Antioquia (Urabá / Bajo Cauca) [82%]</option>
+                        <option value="tolima">Tolima (Ibagué / Guamo) [81%]</option>
+                        <option value="custom">Personalizado (Manual)</option>
+                    </select>
                 </div>
             </div>
 
-            <!-- Ticker 2: TRM Colombia -->
-            <div class="glass-card p-4 rounded-2xl flex justify-between items-center">
-                <div>
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">TRM Dólar (COP)</span>
-                    <div class="text-2xl font-extrabold text-white mt-1" id="val-trm">$3,920.50</div>
-                </div>
-                <div class="text-right">
-                    <span class="text-xs font-bold text-slate-400 bg-slate-800 px-2 py-1 rounded-md">Oficial</span>
-                </div>
-            </div>
-
-            <!-- Ticker 3: Precio Referencia Nacional -->
-            <div class="glass-card p-4 rounded-2xl flex justify-between items-center sm:col-span-2 md:col-span-1">
-                <div>
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Carga Cacao (125 Kg)</span>
-                    <div class="text-2xl font-extrabold text-emeraldLive mt-1" id="val-carga">$4,630,000</div>
-                </div>
-                <i class="fa-solid fa-chart-line text-2xl text-emeraldLive/40"></i>
+            <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-xs text-cocoa-400 font-medium">Preset Calidad:</span>
+                <button onclick="setQualityPreset('fino')" class="px-3 py-1.5 bg-cocoa-800 hover:bg-cocoa-700 text-xs text-amber-200 border border-cocoa-600 rounded-lg font-medium transition">
+                    🏆 Fino de Aroma (90%)
+                </button>
+                <button onclick="setQualityPreset('corriente')" class="px-3 py-1.5 bg-cocoa-800 hover:bg-cocoa-700 text-xs text-amber-200 border border-cocoa-600 rounded-lg font-medium transition">
+                    🌿 Corriente (82%)
+                </button>
+                <button onclick="setQualityPreset('baba')" class="px-3 py-1.5 bg-cocoa-800 hover:bg-cocoa-700 text-xs text-amber-200 border border-cocoa-600 rounded-lg font-medium transition">
+                    💧 En Baba (48%)
+                </button>
             </div>
         </div>
 
-        <!-- Columna Izquierda: Calculadora y Parámetros -->
-        <section class="lg:col-span-5 flex flex-col gap-5">
-            <div class="glass-card p-6 rounded-2xl space-y-4">
-                <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-calculator text-amberGold"></i> Liquidación de Lote
-                </h2>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <div class="lg:col-span-5 space-y-5">
                 
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Cantidad de Cacao</label>
-                    <div class="flex gap-2">
-                        <input type="number" id="input-cantidad" value="1" class="w-full bg-cacao-800 border border-amber-900/40 rounded-xl px-4 py-2.5 text-white font-bold focus:outline-none focus:border-amberGold transition">
-                        <select id="select-unidad" class="bg-cacao-800 border border-amber-900/40 rounded-xl px-3 py-2.5 text-white font-semibold focus:outline-none focus:border-amberGold">
-                            <option value="kg">Kilos (kg)</option>
-                            <option value="bulto">Bulto (50 kg)</option>
-                            <option value="carga" selected>Carga (125 kg)</option>
-                            <option value="ton">Tonelada (1000 kg)</option>
-                        </select>
+                <div class="cocoa-glass-card p-5 rounded-2xl space-y-4">
+                    <div class="flex items-center justify-between border-b border-cocoa-700/50 pb-3">
+                        <h3 class="font-bold text-amberGold-400 flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-chart-line"></i> 1. Mercado Internacional & TRM
+                        </h3>
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30">
+                            EN VIVO (1s)
+                        </span>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between items-center text-xs">
+                            <label for="nyCocoaInput" class="font-semibold text-cocoa-200 flex items-center gap-1.5">
+                                Cacao Bolsa NY (USD / MT)
+                            </label>
+                            <span class="text-amberGold-400 font-bold" id="nyPriceKgUsdHint">$5.24 USD/kg</span>
+                        </div>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-cocoa-400 font-bold">$</span>
+                            <input type="number" id="nyCocoaInput" value="5244" step="1" min="1000" max="15000" oninput="calculateAll()"
+                                class="w-full bg-cocoa-950/80 border border-cocoa-600/60 rounded-xl py-2.5 pl-8 pr-16 text-white font-bold text-lg focus:outline-none focus:border-amberGold-500 transition">
+                            <span class="absolute inset-y-0 right-0 pr-3 flex items-center text-xs text-cocoa-400 font-semibold">USD / MT</span>
+                        </div>
+                        <input type="range" id="nyCocoaSlider" min="2000" max="12000" value="5244" step="1" oninput="syncInputs('ny')"
+                            class="w-full h-1.5 bg-cocoa-900 rounded-lg appearance-none cursor-pointer">
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between items-center text-xs">
+                            <label for="trmInput" class="font-semibold text-cocoa-200">
+                                Dólar TRM Oficial (COP / USD)
+                            </label>
+                            <span class="text-emerald-400 font-medium" id="trmStatusBadge"><i class="fa-solid fa-circle-check"></i> Supabase Sync</span>
+                        </div>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-cocoa-400 font-bold">$</span>
+                            <input type="number" id="trmInput" value="3920" step="1" min="2000" max="7000" oninput="calculateAll()"
+                                class="w-full bg-cocoa-950/80 border border-cocoa-600/60 rounded-xl py-2.5 pl-8 pr-16 text-white font-bold text-lg focus:outline-none focus:border-amberGold-500 transition">
+                            <span class="absolute inset-y-0 right-0 pr-3 flex items-center text-xs text-cocoa-400 font-semibold">COP</span>
+                        </div>
+                        <input type="range" id="trmSlider" min="3000" max="5000" value="3920" step="1" oninput="syncInputs('trm')"
+                            class="w-full h-1.5 bg-cocoa-900 rounded-lg appearance-none cursor-pointer">
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1">Rendimiento / Calidad (%)</label>
-                    <input type="range" id="input-calidad" min="70" max="100" value="85" class="w-full accent-amberGold cursor-pointer">
-                    <div class="flex justify-between text-xs text-slate-400 mt-1">
-                        <span>Corriente (70%)</span>
-                        <span id="calidad-val" class="text-amberGold font-bold">85% (Fino)</span>
-                        <span>Premium (100%)</span>
+                <div class="cocoa-glass-card p-5 rounded-2xl space-y-4">
+                    <div class="flex items-center justify-between border-b border-cocoa-700/50 pb-3">
+                        <h3 class="font-bold text-amberGold-400 flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-sliders"></i> 2. Factor de Compra Local & Calidad
+                        </h3>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <label for="yieldInput" class="font-semibold text-cocoa-200">
+                                % Reconocimiento Acopio Local / Nacional
+                            </label>
+                            <span class="text-amberGold-400 font-bold text-sm" id="yieldPercentDisplay">84%</span>
+                        </div>
+                        <input type="range" id="yieldSlider" min="30" max="100" value="84" step="1" oninput="calculateAll()"
+                            class="w-full h-2 bg-cocoa-900 rounded-lg appearance-none cursor-pointer">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 pt-2">
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-cocoa-300">Humedad</label>
+                            <select id="moistureSelect" onchange="calculateAll()" class="w-full bg-cocoa-950 border border-cocoa-700 rounded-lg p-2 text-xs text-cocoa-100 focus:outline-none focus:border-amberGold-500">
+                                <option value="0">Seco Exportación (≤ 7%)</option>
+                                <option value="3">Humedad Media (8% - 10%) [-3%]</option>
+                                <option value="7">Humedad Alta (11% - 14%) [-7%]</option>
+                                <option value="50">Cacao Fresco / En Baba (-50%)</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-cocoa-300">Pasilla / Impureza</label>
+                            <select id="impuritySelect" onchange="calculateAll()" class="w-full bg-cocoa-950 border border-cocoa-700 rounded-lg p-2 text-xs text-cocoa-100 focus:outline-none focus:border-amberGold-500">
+                                <option value="0">Sin descuento (0%)</option>
+                                <option value="2">Pasilla Leve (-2%)</option>
+                                <option value="5">Pasilla Moderada (-5%)</option>
+                                <option value="10">Pasilla Alta (-10%)</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
+
+                <div class="cocoa-glass-card p-5 rounded-2xl space-y-4">
+                    <div class="flex items-center justify-between border-b border-cocoa-700/50 pb-3">
+                        <h3 class="font-bold text-amberGold-400 flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-boxes-stacked"></i> 3. Calculadora de Cosecha / Lote
+                        </h3>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-cocoa-200">Cantidad</label>
+                            <input type="number" id="quantityInput" value="1" min="0.1" step="0.5" oninput="calculateAll()"
+                                class="w-full bg-cocoa-950 border border-cocoa-700 rounded-xl py-2 px-3 text-white font-bold text-base focus:outline-none focus:border-amberGold-500">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-cocoa-200">Unidad</label>
+                            <select id="unitSelect" onchange="calculateAll()" class="w-full bg-cocoa-950 border border-cocoa-700 rounded-xl py-2 px-3 text-xs text-white font-semibold focus:outline-none focus:border-amberGold-500">
+                                <option value="kg">Kilogramos (kg)</option>
+                                <option value="carga" selected>Cargas (125 kg)</option>
+                                <option value="bulto">Bultos (50 kg)</option>
+                                <option value="ton">Toneladas (1,000 kg)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </section>
 
-        <!-- Columna Derecha: Resultado Principal y Detalles -->
-        <section class="lg:col-span-7">
-            <div class="glass-card p-6 rounded-2xl border border-amberGold/30 relative overflow-hidden">
-                <span class="text-xs font-bold uppercase tracking-wider text-amberGold">Valor Estimado del Lote</span>
-                <div class="text-4xl sm:text-5xl font-black text-white my-3" id="total-liquidacion">
-                    $4,630,000 <span class="text-lg font-semibold text-slate-400">COP</span>
+            <div class="lg:col-span-7 space-y-5">
+
+                <div class="cocoa-glass-card p-6 rounded-3xl relative overflow-hidden border-2 border-amberGold-500/40 amber-glow space-y-6">
+                    <div class="absolute -top-12 -right-12 w-48 h-48 bg-amberGold-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                    <div class="flex items-center justify-between">
+                        <span class="px-3 py-1 bg-amberGold-500/20 text-amberGold-400 border border-amberGold-500/40 text-xs font-extrabold uppercase tracking-wider rounded-full flex items-center gap-1.5">
+                            <i class="fa-solid fa-coins"></i> Cotización Liquidación Colombia
+                        </span>
+                        <span class="text-xs text-cocoa-300 font-mono" id="lastUpdatedTime">En vivo: 0.00s</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        
+                        <div id="cardKgBox" class="bg-cocoa-950/80 border border-cocoa-700/60 rounded-2xl p-4 flex flex-col justify-between space-y-2 transition-colors duration-300">
+                            <div class="flex items-center justify-between text-cocoa-300 text-xs font-medium">
+                                <span>Precio Venta Kilo Neto</span>
+                                <i class="fa-solid fa-weight-scale text-amberGold-400"></i>
+                            </div>
+                            <div>
+                                <div class="text-3xl md:text-4xl font-extrabold text-white tracking-tight" id="pricePerKgDisplay">
+                                    $17,265 <span class="text-sm font-normal text-cocoa-300">COP/kg</span>
+                                </div>
+                                <div class="text-xs text-emerald-400 font-semibold mt-1" id="usdPerKgEquivalent">
+                                    ≈ $4.40 USD / kg
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="cardCargaBox" class="bg-gradient-to-br from-cocoa-800/90 to-cocoa-950 border border-amberGold-500/30 rounded-2xl p-4 flex flex-col justify-between space-y-2 transition-colors duration-300">
+                            <div class="flex items-center justify-between text-amberGold-300 text-xs font-bold">
+                                <span>Precio por CARGA (125 kg)</span>
+                                <i class="fa-solid fa-box text-amberGold-400"></i>
+                            </div>
+                            <div>
+                                <div class="text-2xl md:text-3xl font-black cocoa-gradient-text tracking-tight" id="pricePerCargaDisplay">
+                                    $2,158,125 <span class="text-xs font-normal text-cocoa-200">COP</span>
+                                </div>
+                                <div class="text-xs text-cocoa-300 font-medium mt-1" id="pricePerBultoDisplay">
+                                    Bulto (50kg): $863,250 COP
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="bg-cocoa-900/90 border border-cocoa-700/70 p-4 rounded-2xl space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold text-cocoa-200 uppercase tracking-wide">
+                                Total Cosecha Seleccionada (<span id="lotSummaryLabel">1 Carga / 125 kg</span>)
+                            </span>
+                            <span class="text-xs text-amberGold-400 font-bold" id="totalLotUsd">≈ $550.50 USD</span>
+                        </div>
+                        <div class="text-3xl font-black text-amberGold-400 flex items-baseline gap-2" id="totalLotCop">
+                            $2,158,125 <span class="text-sm font-semibold text-cocoa-300">COP Total</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1 text-xs text-cocoa-300 border-t border-cocoa-700/50 pt-3">
+                        <div class="flex justify-between">
+                            <span>Precio Bruto Internacional (Bolsa NY en COP):</span>
+                            <span id="grossInternationalCop" class="font-semibold text-cocoa-100">$20,556 COP / kg</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Factor Regional de Pago Local:</span>
+                            <span id="yieldFactorLabel" class="font-semibold text-cocoa-100">84.0%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Descuentos Calidad (Humedad/Pasilla):</span>
+                            <span id="qualityDiscountLabel" class="font-semibold text-amber-400">0.0%</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3 pt-2">
+                        <button onclick="copyQuoteToClipboard()" class="w-full py-3 bg-gradient-to-r from-amberGold-600 to-amberGold-500 hover:from-amberGold-500 hover:to-amberGold-400 text-cocoa-950 font-extrabold rounded-xl text-sm transition shadow-lg flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-copy"></i> Copiar Cotización al Portapapeles
+                        </button>
+                    </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4 pt-4 border-t border-slate-800 text-sm">
-                    <div>
-                        <span class="text-slate-400 text-xs block">Precio por Kilo Neto</span>
-                        <span class="font-bold text-white text-lg" id="precio-kilo">$37,040 COP</span>
+                <div class="cocoa-glass-card p-5 rounded-2xl space-y-3">
+                    <div class="flex items-center justify-between border-b border-cocoa-700/50 pb-2">
+                        <h3 class="font-bold text-amberGold-400 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line text-emerald-400 animate-pulse"></i> Gráfica Animada en Vivo (Ticker 1s)
+                        </h3>
+                        <div class="flex gap-1 items-center">
+                            <span class="text-[10px] text-emerald-400 font-semibold mr-1 flex items-center gap-1">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-ping"></span> Moving Ticks
+                            </span>
+                            <button onclick="resetChartHistory()" class="px-2 py-0.5 text-[10px] bg-cocoa-800 text-amberGold-300 rounded hover:bg-cocoa-700 font-semibold border border-cocoa-600">
+                                <i class="fa-solid fa-arrows-rotate text-[9px]"></i> Reset
+                            </button>
+                        </div>
                     </div>
-                    <div>
-                        <span class="text-slate-400 text-xs block">Equivalente Dólar</span>
-                        <span class="font-bold text-white text-lg" id="precio-usd">$9.45 USD/kg</span>
+
+                    <div class="relative w-full h-44 overflow-hidden rounded-xl bg-cocoa-950/60 p-2 border border-cocoa-800/80">
+                        <svg id="trendSvg" class="w-full h-full overflow-visible" viewBox="0 0 500 150">
+                            </svg>
+                    </div>
+
+                    <div class="flex justify-between items-center text-[11px] text-cocoa-400 pt-1">
+                        <span><i class="fa-solid fa-circle text-amberGold-500 text-[8px]"></i> Mercado Futuros ICE NY CC</span>
+                        <span id="chartMinMaxHint">Rango Ticks: Cargando en vivo...</span>
                     </div>
                 </div>
+
+                <div class="cocoa-glass-card p-5 rounded-2xl space-y-3">
+                    <h3 class="font-bold text-cocoa-100 text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-table-list text-amberGold-400"></i> Tabla de Liquidación Rápida
+                    </h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-center text-xs">
+                        <div class="bg-cocoa-950/70 p-2.5 rounded-xl border border-cocoa-800">
+                            <div class="text-cocoa-400">1 Kilogramo</div>
+                            <div class="font-bold text-amberGold-400 text-sm mt-0.5" id="table1kg">$17,265 COP</div>
+                        </div>
+                        <div class="bg-cocoa-950/70 p-2.5 rounded-xl border border-cocoa-800">
+                            <div class="text-cocoa-400">1 Bulto (50 kg)</div>
+                            <div class="font-bold text-amberGold-400 text-sm mt-0.5" id="table50kg">$863,250 COP</div>
+                        </div>
+                        <div class="bg-cocoa-950/70 p-2.5 rounded-xl border border-cocoa-800">
+                            <div class="text-cocoa-400">1 Carga (125 kg)</div>
+                            <div class="font-bold text-amberGold-400 text-sm mt-0.5" id="table125kg">$2,158,125 COP</div>
+                        </div>
+                        <div class="bg-cocoa-950/70 p-2.5 rounded-xl border border-cocoa-800">
+                            <div class="text-cocoa-400">1 Tonelada (1,000 kg)</div>
+                            <div class="font-bold text-amberGold-400 text-sm mt-0.5" id="table1000kg">$17.27M COP</div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </section>
+        </div>
 
     </main>
 
-    <!-- Footer Simple -->
-    <footer class="border-t border-slate-800 text-center py-4 text-xs text-slate-500">
-        <p>Cacaovalores &copy; 2026 — Valor Justo · Mercado Transparente</p>
+    <footer class="border-t border-slate-800 text-center py-6 text-xs text-cocoa-400 mt-12">
+        <p class="font-bold text-amberGold">CACAOVALORES &copy; 2026</p>
+        <p class="mt-1">VALOR JUSTO · MERCADO TRANSPARENTE</p>
     </footer>
 
-    <!-- Lógica JS Inicial -->
-    <script>
-        const inputCalidad = document.getElementById('input-calidad');
-        const calidadVal = document.getElementById('calidad-val');
+    <div id="toastMessage" class="hidden fixed bottom-5 right-5 z-50 bg-emerald-600 text-white px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2 text-xs font-bold transition">
+        <i class="fa-solid fa-circle-check text-base"></i>
+        <span id="toastText">Cotización copiada</span>
+    </div>
 
-        inputCalidad.addEventListener('input', (e) => {
-            calidadVal.textContent = `${e.target.value}%`;
+    <script>
+        // 1. CONFIGURACIÓN SUPABASE (Ingresa tus datos si los tienes)
+        const SUPABASE_URL = 'https://TU_PROYECTO.supabase.co';
+        const SUPABASE_KEY = 'TU_LLAVE_ANON_PUBLIC_KEY';
+        let supabaseClient = null;
+
+        if (SUPABASE_URL.includes('supabase.co') && !SUPABASE_URL.includes('TU_PROYECTO')) {
+            supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        }
+
+        // State Global
+        let autoSyncActive = true;
+        let chartData = [];
+        const MAX_CHART_POINTS = 14;
+        let lastPriceNy = 5244;
+
+        // Inicializar Historial de Ticks para la Gráfica
+        function initChartHistory() {
+            chartData = [];
+            let baseNy = parseFloat(document.getElementById('nyCocoaInput').value) || 5244;
+            const now = new Date();
+            for (let i = MAX_CHART_POINTS - 1; i >= 0; i--) {
+                const t = new Date(now.getTime() - i * 1000);
+                const variance = (Math.sin(i) * 3) + ((Math.random() - 0.5) * 2);
+                chartData.push({
+                    val: Math.round(baseNy + variance),
+                    timeStr: t.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                });
+            }
+            renderSvgChart();
+        }
+
+        // Cálculo Completo de Precios
+        function calculateAll() {
+            const nyUsdMt = parseFloat(document.getElementById('nyCocoaInput').value) || 0;
+            const trmCop = parseFloat(document.getElementById('trmInput').value) || 0;
+            const yieldPct = parseFloat(document.getElementById('yieldSlider').value) || 84;
+            const moistureDisc = parseFloat(document.getElementById('moistureSelect').value) || 0;
+            const impurityDisc = parseFloat(document.getElementById('impuritySelect').value) || 0;
+            const quantity = parseFloat(document.getElementById('quantityInput').value) || 1;
+            const unit = document.getElementById('unitSelect').value;
+
+            // Fórmulas Cacaoteras
+            const grossCopPerKg = (nyUsdMt / 1000) * trmCop;
+            const netDiscountFactor = (100 - moistureDisc - impurityDisc) / 100;
+            const netCopPerKg = grossCopPerKg * (yieldPct / 100) * netDiscountFactor;
+            
+            const copPerCarga = netCopPerKg * 125;
+            const copPerBulto = netCopPerKg * 50;
+            const usdPerKg = netCopPerKg / trmCop;
+
+            // Determinar Total de Kilos del Lote
+            let totalKg = quantity;
+            let unitLabel = "kg";
+            if (unit === 'carga') { totalKg = quantity * 125; unitLabel = quantity === 1 ? "Carga" : "Cargas"; }
+            else if (unit === 'bulto') { totalKg = quantity * 50; unitLabel = quantity === 1 ? "Bulto" : "Bultos"; }
+            else if (unit === 'ton') { totalKg = quantity * 1000; unitLabel = quantity === 1 ? "Tonelada" : "Toneladas"; }
+
+            const totalLotCop = netCopPerKg * totalKg;
+            const totalLotUsd = totalLotCop / trmCop;
+
+            // Actualizaciones en Pantalla
+            document.getElementById('headerNyPriceDisplay').textContent = `$${nyUsdMt.toLocaleString('en-US', {minimumFractionDigits: 2})} USD/MT`;
+            document.getElementById('headerTrmDisplay').textContent = `$${Math.round(trmCop).toLocaleString('es-CO')} COP`;
+            document.getElementById('nyPriceKgUsdHint').textContent = `$${(nyUsdMt / 1000).toFixed(2)} USD/kg`;
+            document.getElementById('yieldPercentDisplay').textContent = `${yieldPct}%`;
+
+            document.getElementById('pricePerKgDisplay').childNodes[0].nodeValue = `$${Math.round(netCopPerKg).toLocaleString('es-CO')} `;
+            document.getElementById('usdPerKgEquivalent').textContent = `≈ $${usdPerKg.toFixed(2)} USD / kg`;
+            
+            document.getElementById('pricePerCargaDisplay').childNodes[0].nodeValue = `$${Math.round(copPerCarga).toLocaleString('es-CO')} `;
+            document.getElementById('pricePerBultoDisplay').textContent = `Bulto (50kg): $${Math.round(copPerBulto).toLocaleString('es-CO')} COP`;
+
+            document.getElementById('lotSummaryLabel').textContent = `${quantity} ${unitLabel} / ${totalKg.toLocaleString('es-CO')} kg`;
+            document.getElementById('totalLotCop').childNodes[0].nodeValue = `$${Math.round(totalLotCop).toLocaleString('es-CO')} `;
+            document.getElementById('totalLotUsd').textContent = `≈ $${totalLotUsd.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
+
+            document.getElementById('grossInternationalCop').textContent = `$${Math.round(grossCopPerKg).toLocaleString('es-CO')} COP / kg`;
+            document.getElementById('yieldFactorLabel').textContent = `${yieldPct.toFixed(1)}%`;
+            document.getElementById('qualityDiscountLabel').textContent = `${(moistureDisc + impurityDisc).toFixed(1)}%`;
+
+            // Tabla Rápida
+            document.getElementById('table1kg').textContent = `$${Math.round(netCopPerKg).toLocaleString('es-CO')} COP`;
+            document.getElementById('table50kg').textContent = `$${Math.round(copPerBulto).toLocaleString('es-CO')} COP`;
+            document.getElementById('table125kg').textContent = `$${Math.round(copPerCarga).toLocaleString('es-CO')} COP`;
+            document.getElementById('table1000kg').textContent = `$${(netCopPerKg * 1000 / 1000000).toFixed(2)}M COP`;
+        }
+
+        // Sincronizar Sliders e Inputs
+        function syncInputs(type) {
+            if (type === 'ny') {
+                document.getElementById('nyCocoaInput').value = document.getElementById('nyCocoaSlider').value;
+            } else if (type === 'trm') {
+                document.getElementById('trmInput').value = document.getElementById('trmSlider').value;
+            }
+            calculateAll();
+        }
+
+        // Renderizado Dinámico de Gráfica SVG
+        function renderSvgChart() {
+            const svg = document.getElementById('trendSvg');
+            if (!svg || chartData.length === 0) return;
+
+            const width = 500;
+            const height = 150;
+            const padding = 25;
+
+            const vals = chartData.map(d => d.val);
+            let minVal = Math.min(...vals);
+            let maxVal = Math.max(...vals);
+
+            if (minVal === maxVal) {
+                minVal -= 5;
+                maxVal += 5;
+            } else {
+                const margin = (maxVal - minVal) * 0.15;
+                minVal -= margin;
+                maxVal += margin;
+            }
+
+            document.getElementById('chartMinMaxHint').textContent = `Rango Ticks: $${Math.round(minVal)} - $${Math.round(maxVal)} USD/MT`;
+
+            const points = chartData.map((d, index) => {
+                const x = padding + (index / (chartData.length - 1)) * (width - 2 * padding);
+                const y = height - padding - ((d.val - minVal) / (maxVal - minVal)) * (height - 2 * padding);
+                return { x, y, val: d.val, timeStr: d.timeStr };
+            });
+
+            // Generar ruta suavizada
+            let dPath = `M ${points[0].x} ${points[0].y}`;
+            for (let i = 1; i < points.length; i++) {
+                const prev = points[i - 1];
+                const curr = points[i];
+                const cx = (prev.x + curr.x) / 2;
+                dPath += ` C ${cx} ${prev.y}, ${cx} ${curr.y}, ${curr.x} ${curr.y}`;
+            }
+
+            const lastPoint = points[points.length - 1];
+
+            svg.innerHTML = `
+                <line x1="0" y1="30" x2="500" y2="30" stroke="rgba(212,141,88,0.08)" stroke-dasharray="4" />
+                <line x1="0" y1="75" x2="500" y2="75" stroke="rgba(212,141,88,0.08)" stroke-dasharray="4" />
+                <line x1="0" y1="120" x2="500" y2="120" stroke="rgba(212,141,88,0.08)" stroke-dasharray="4" />
+
+                <path d="${dPath}" fill="none" stroke="#f59e0b" stroke-width="3" class="svg-smooth-path" />
+
+                ${points.map((p, idx) => `
+                    <circle cx="${p.x}" cy="${p.y}" r="${idx === points.length - 1 ? 6 : 3}" 
+                            fill="${idx === points.length - 1 ? '#10b981' : '#f59e0b'}" 
+                            stroke="#1e0c08" stroke-width="1.5"
+                            class="${idx === points.length - 1 ? 'live-chart-node' : ''}">
+                    </circle>
+                `).join('')}
+
+                <g transform="translate(${Math.min(lastPoint.x - 30, 430)}, ${Math.max(lastPoint.y - 30, 10)})">
+                    <rect width="65" height="20" rx="6" fill="#10b981" />
+                    <text x="32" y="14" fill="#1e0c08" font-size="10" font-weight="800" text-anchor="middle">$${lastPoint.val}</text>
+                </g>
+            `;
+        }
+
+        // Ticker de Actualización 1 Segundo (Moving Ticks)
+        function tickRealtime() {
+            if (!autoSyncActive) return;
+
+            const inputNy = document.getElementById('nyCocoaInput');
+            let currentNy = parseFloat(inputNy.value) || 5244;
+
+            // Simulación micro-movimiento de bolsa cada segundo
+            const delta = (Math.random() - 0.49) > 0 ? (Math.floor(Math.random() * 3) + 1) : -(Math.floor(Math.random() * 3) + 1);
+            let newNy = Math.max(2000, currentNy + delta);
+            
+            inputNy.value = newNy;
+            document.getElementById('nyCocoaSlider').value = newNy;
+
+            // Efecto Flash Verde/Rojo
+            const cardKg = document.getElementById('cardKgBox');
+            if (newNy > currentNy) {
+                cardKg.classList.add('price-flash-up');
+                setTimeout(() => cardKg.classList.remove('price-flash-up'), 800);
+            } else if (newNy < currentNy) {
+                cardKg.classList.add('price-flash-down');
+                setTimeout(() => cardKg.classList.remove('price-flash-down'), 800);
+            }
+
+            // Agregar a la gráfica
+            const now = new Date();
+            chartData.shift();
+            chartData.push({
+                val: newNy,
+                timeStr: now.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+            });
+
+            renderSvgChart();
+            calculateAll();
+
+            document.getElementById('lastUpdatedTime').textContent = `Actualizado: ${now.toLocaleTimeString('es-CO')}`;
+        }
+
+        // Conexión WebSockets Supabase en Tiempo Real
+        function setupSupabaseRealtime() {
+            if (!supabaseClient) return;
+
+            supabaseClient
+                .channel('public:precios')
+                .on('postgres_changes', { event: '*', schema: 'public', table: 'precios' }, payload => {
+                    const row = payload.new;
+                    if (row && row.precio_ny) {
+                        document.getElementById('nyCocoaInput').value = row.precio_ny;
+                        document.getElementById('nyCocoaSlider').value = row.precio_ny;
+                    }
+                    if (row && row.trm) {
+                        document.getElementById('trmInput').value = row.trm;
+                        document.getElementById('trmSlider').value = row.trm;
+                    }
+                    calculateAll();
+                })
+                .subscribe();
+        }
+
+        // Acciones Auxiliares
+        function toggleAutoRefresh() {
+            autoSyncActive = !autoSyncActive;
+            const btn = document.getElementById('toggleAutoBtn');
+            const txt = document.getElementById('autoBtnText');
+            if (autoSyncActive) {
+                btn.className = "px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-[11px] transition flex items-center gap-1";
+                txt.textContent = "ACTIVO";
+            } else {
+                btn.className = "px-2.5 py-1 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-lg text-[11px] transition flex items-center gap-1";
+                txt.textContent = "PAUSADO";
+            }
+        }
+
+        function triggerManualSync() {
+            const icon = document.getElementById('syncIcon');
+            icon.classList.add('animate-spin');
+            tickRealtime();
+            setTimeout(() => icon.classList.remove('animate-spin'), 600);
+        }
+
+        function onRegionChange() {
+            const val = document.getElementById('regionSelect').value;
+            const slider = document.getElementById('yieldSlider');
+            const presets = { santander: 84, huila: 83, arauca: 82, tumaco: 86, antioquia: 82, tolima: 81 };
+            if (presets[val]) {
+                slider.value = presets[val];
+            }
+            calculateAll();
+        }
+
+        function setQualityPreset(type) {
+            const slider = document.getElementById('yieldSlider');
+            const moist = document.getElementById('moistureSelect');
+            const imp = document.getElementById('impuritySelect');
+
+            if (type === 'fino') { slider.value = 90; moist.value = 0; imp.value = 0; }
+            else if (type === 'corriente') { slider.value = 82; moist.value = 0; imp.value = 0; }
+            else if (type === 'baba') { slider.value = 48; moist.value = 50; imp.value = 0; }
+            
+            calculateAll();
+        }
+
+        function resetChartHistory() {
+            initChartHistory();
+        }
+
+        function copyQuoteToClipboard() {
+            const ny = document.getElementById('nyCocoaInput').value;
+            const trm = document.getElementById('trmInput').value;
+            const carga = document.getElementById('pricePerCargaDisplay').innerText.trim();
+            const kilo = document.getElementById('pricePerKgDisplay').innerText.trim();
+
+            const text = `CACAOVALORES — Cotización en Vivo\n• Bolsa NY: $${ny} USD/MT\n• TRM Dólar: $${trm} COP\n• Kilo Neto: ${kilo}\n• Carga (125kg): ${carga}\nValor Justo · Mercado Transparente`;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById('toastMessage');
+                toast.classList.remove('hidden');
+                setTimeout(() => toast.classList.add('hidden'), 2500);
+            });
+        }
+
+        // Inicializar al Cargar la Página
+        window.addEventListener('DOMContentLoaded', () => {
+            initChartHistory();
+            calculateAll();
+            setupSupabaseRealtime();
+            setInterval(tickRealtime, 1000); // Ticker de 1 segundo en vivo
         });
     </script>
 </body>
