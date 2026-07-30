@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CacaoTrader COP - Mercado en Tiempo Real</title>
+    <title>Cacaovalores — Valor Justo · Mercado Transparente</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome para Iconos -->
@@ -33,7 +33,7 @@
     </script>
     <style>
         .glass-card {
-            background: rgba(31, 13, 7, 0.7);
+            background: rgba(31, 13, 7, 0.75);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(245, 158, 11, 0.15);
         }
@@ -44,13 +44,16 @@
     <!-- Top Navigation Bar -->
     <header class="border-b border-amber-900/30 bg-cacao-900/90 sticky top-0 z-50 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            
+            <!-- Branding & Logo -->
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-slate-900 font-extrabold text-xl shadow-lg shadow-amber-500/20">
-                    <i class="fa-solid font-bold fa-seedling"></i>
+                <div class="h-12 w-12 rounded-xl bg-amber-950/40 p-1 border border-amber-500/20 flex items-center justify-center overflow-hidden shadow-md shadow-amber-500/10">
+                    <!-- Muestra el logo cargado en GitHub -->
+                    <img src="logo.jpg" alt="Logo Cacaovalores" class="h-full w-full object-cover rounded-lg">
                 </div>
                 <div>
-                    <h1 class="font-extrabold text-lg leading-tight tracking-tight text-white">CacaoTrader <span class="text-amberGold">COP</span></h1>
-                    <p class="text-xs text-slate-400">Cotización e Indicadores Cacaoteros</p>
+                    <h1 class="font-extrabold text-xl leading-none tracking-tight text-white uppercase">Cacaovalores</h1>
+                    <p class="text-[10px] sm:text-xs text-amberGold font-semibold tracking-wider mt-1">VALOR JUSTO · MERCADO TRANSPARENTE</p>
                 </div>
             </div>
 
@@ -58,7 +61,7 @@
             <div class="flex items-center gap-3">
                 <span id="connection-status" class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                     <span class="w-2 h-2 rounded-full bg-emeraldLive animate-pulse"></span>
-                    <span id="status-text">Conectado (En vivo)</span>
+                    <span id="status-text" class="hidden sm:inline">Conectado (En vivo)</span>
                 </span>
             </div>
         </div>
@@ -105,7 +108,7 @@
         <section class="lg:col-span-5 flex flex-col gap-5">
             <div class="glass-card p-6 rounded-2xl space-y-4">
                 <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-sliders text-amberGold"></i> Liquidación de Lote
+                    <i class="fa-solid fa-calculator text-amberGold"></i> Liquidación de Lote
                 </h2>
                 
                 <div>
@@ -158,12 +161,11 @@
 
     <!-- Footer Simple -->
     <footer class="border-t border-slate-800 text-center py-4 text-xs text-slate-500">
-        <p>CacaoTrader COP &copy; 2026 — Plataforma de Cotización en Tiempo Real</p>
+        <p>Cacaovalores &copy; 2026 — Valor Justo · Mercado Transparente</p>
     </footer>
 
     <!-- Lógica JS Inicial -->
     <script>
-        // Actualización básica de interfaz
         const inputCalidad = document.getElementById('input-calidad');
         const calidadVal = document.getElementById('calidad-val');
 
