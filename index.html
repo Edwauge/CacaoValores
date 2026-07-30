@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CacaoTrader COP - Mercado en Tiempo Real</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cacao: {
+                            900: '#120704',
+                            800: '#1f0d07',
+                            700: '#34160c',
+                        },
+                        amberGold: '#F59E0B',
+                        emeraldLive: '#10B981'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(31, 13, 7, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(245, 158, 11, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-cacao-900 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
+
+    <!-- Top Navigation Bar -->
+    <header class="border-b border-amber-900/30 bg-cacao-900/90 sticky top-0 z-50 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-slate-900 font-extrabold text-xl shadow-lg shadow-amber-500/20">
+                    <i class="fa-solid font-bold fa-seedling"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg leading-tight tracking-tight text-white">CacaoTrader <span class="text-amberGold">COP</span></h1>
+                    <p class="text-xs text-slate-400">Cotización e Indicadores Cacaoteros</p>
+                </div>
+            </div>
+
+            <!-- Realtime Status Badge -->
+            <div class="flex items-center gap-3">
+                <span id="connection-status" class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span class="w-2 h-2 rounded-full bg-emeraldLive animate-pulse"></span>
+                    <span id="status-text">Conectado (En vivo)</span>
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-7xl mx-auto px-4 py-6 w-full grow grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Banner de Tickers Financieros -->
+        <div class="lg:col-span-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <!-- Ticker 1: NY ICE Cacao -->
+            <div class="glass-card p-4 rounded-2xl flex justify-between items-center">
+                <div>
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Cacao ICE NY (USD/MT)</span>
+                    <div class="text-2xl font-extrabold text-amberGold mt-1" id="val-ny">$9,450.00</div>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-md">+1.8%</span>
+                </div>
+            </div>
+
+            <!-- Ticker 2: TRM Colombia -->
+            <div class="glass-card p-4 rounded-2xl flex justify-between items-center">
+                <div>
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">TRM Dólar (COP)</span>
+                    <div class="text-2xl font-extrabold text-white mt-1" id="val-trm">$3,920.50</div>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs font-bold text-slate-400 bg-slate-800 px-2 py-1 rounded-md">Oficial</span>
+                </div>
+            </div>
+
+            <!-- Ticker 3: Precio Referencia Nacional -->
+            <div class="glass-card p-4 rounded-2xl flex justify-between items-center sm:col-span-2 md:col-span-1">
+                <div>
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Carga Cacao (125 Kg)</span>
+                    <div class="text-2xl font-extrabold text-emeraldLive mt-1" id="val-carga">$4,630,000</div>
+                </div>
+                <i class="fa-solid fa-chart-line text-2xl text-emeraldLive/40"></i>
+            </div>
+        </div>
+
+        <!-- Columna Izquierda: Calculadora y Parámetros -->
+        <section class="lg:col-span-5 flex flex-col gap-5">
+            <div class="glass-card p-6 rounded-2xl space-y-4">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-amberGold"></i> Liquidación de Lote
+                </h2>
+                
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Cantidad de Cacao</label>
+                    <div class="flex gap-2">
+                        <input type="number" id="input-cantidad" value="1" class="w-full bg-cacao-800 border border-amber-900/40 rounded-xl px-4 py-2.5 text-white font-bold focus:outline-none focus:border-amberGold transition">
+                        <select id="select-unidad" class="bg-cacao-800 border border-amber-900/40 rounded-xl px-3 py-2.5 text-white font-semibold focus:outline-none focus:border-amberGold">
+                            <option value="kg">Kilos (kg)</option>
+                            <option value="bulto">Bulto (50 kg)</option>
+                            <option value="carga" selected>Carga (125 kg)</option>
+                            <option value="ton">Tonelada (1000 kg)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Rendimiento / Calidad (%)</label>
+                    <input type="range" id="input-calidad" min="70" max="100" value="85" class="w-full accent-amberGold cursor-pointer">
+                    <div class="flex justify-between text-xs text-slate-400 mt-1">
+                        <span>Corriente (70%)</span>
+                        <span id="calidad-val" class="text-amberGold font-bold">85% (Fino)</span>
+                        <span>Premium (100%)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Columna Derecha: Resultado Principal y Detalles -->
+        <section class="lg:col-span-7">
+            <div class="glass-card p-6 rounded-2xl border border-amberGold/30 relative overflow-hidden">
+                <span class="text-xs font-bold uppercase tracking-wider text-amberGold">Valor Estimado del Lote</span>
+                <div class="text-4xl sm:text-5xl font-black text-white my-3" id="total-liquidacion">
+                    $4,630,000 <span class="text-lg font-semibold text-slate-400">COP</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 pt-4 border-t border-slate-800 text-sm">
+                    <div>
+                        <span class="text-slate-400 text-xs block">Precio por Kilo Neto</span>
+                        <span class="font-bold text-white text-lg" id="precio-kilo">$37,040 COP</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 text-xs block">Equivalente Dólar</span>
+                        <span class="font-bold text-white text-lg" id="precio-usd">$9.45 USD/kg</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Simple -->
+    <footer class="border-t border-slate-800 text-center py-4 text-xs text-slate-500">
+        <p>CacaoTrader COP &copy; 2026 — Plataforma de Cotización en Tiempo Real</p>
+    </footer>
+
+    <!-- Lógica JS Inicial -->
+    <script>
+        // Actualización básica de interfaz
+        const inputCalidad = document.getElementById('input-calidad');
+        const calidadVal = document.getElementById('calidad-val');
+
+        inputCalidad.addEventListener('input', (e) => {
+            calidadVal.textContent = `${e.target.value}%`;
+        });
+    </script>
+</body>
+</html>
