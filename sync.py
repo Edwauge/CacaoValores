@@ -1,13 +1,10 @@
 import urllib.request
 import json
-import os
 
-# Configuración de credenciales
+# Credenciales configuradas
 TWELVE_DATA_KEY = "845b63a569314ab292f32bf91c0aeebd"
-
-# ⚠️ REEMPLAZA ESTOS DOS VALORES CON LOS DE TU PROYECTO EN SUPABASE
-SUPABASE_URL = "https://anmkhioskzubmpzddisl.supabase.co/rest/v1/"
-SUPABASE_KEY = "845b63a569314ab292f32bf91c0aeebd"
+SUPABASE_URL = "https://anmkioskzubmpzddisl.supabase.co"
+SUPABASE_KEY = "sb_publishable_9bAQgfSRr2pc32uiq_N5Nw_Rg3puS1y"
 
 def obtener_precio_cacao():
     url = f"https://api.twelvedata.com/price?symbol=CC&apikey={TWELVE_DATA_KEY}"
@@ -18,14 +15,13 @@ def obtener_precio_cacao():
             if "price" in data:
                 return float(data["price"])
             else:
-                print("Nota API Twelve Data:", data)
+                print("Aviso API Twelve Data:", data)
                 return 5244.0
     except Exception as e:
-        print("Error obteniendo Cacao NY:", e)
+        print("Error al obtener Cacao NY:", e)
         return 5244.0
 
 def obtener_trm_colombia():
-    # API Oficial del Gobierno de Colombia (Datos.gov.co / Superfinanciera)
     url = "https://www.datos.gov.co/resource/32sa-213a.json?$limit=1&$order=vigenciadesde%20DESC"
     try:
         req = urllib.request.Request(url)
@@ -36,7 +32,7 @@ def obtener_trm_colombia():
             else:
                 return 3920.50
     except Exception as e:
-        print("Error obteniendo TRM Colombia:", e)
+        print("Error al obtener TRM Colombia:", e)
         return 3920.50
 
 def guardar_en_supabase(precio_ny, trm):
