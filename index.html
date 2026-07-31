@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cacaovalores — Valor Justo · Mercado Transparente</title>
     
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -40,7 +39,6 @@
         }
     </script>
 
-    <!-- Google Fonts, FontAwesome & Supabase JS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -85,18 +83,6 @@
             animation: pulseGlow 2s infinite ease-in-out;
         }
 
-        @keyframes flashUp {
-            0% { background-color: rgba(16, 185, 129, 0.35); color: #34d399; }
-            100% { background-color: transparent; }
-        }
-        @keyframes flashDown {
-            0% { background-color: rgba(239, 68, 68, 0.35); color: #f87171; }
-            100% { background-color: transparent; }
-        }
-
-        .price-flash-up { animation: flashUp 0.8s ease-out; }
-        .price-flash-down { animation: flashDown 0.8s ease-out; }
-
         .svg-smooth-path { transition: d 0.3s ease-in-out; }
         
         @keyframes chartPulse {
@@ -109,11 +95,9 @@
 </head>
 <body class="antialiased pb-12 selection:bg-amber-600 selection:text-white">
 
-    <!-- Header Navigation -->
     <header class="sticky top-0 z-50 cocoa-glass border-b border-cocoa-700/40 px-4 lg:px-8 py-3 mb-4">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
             
-            <!-- Logo & Branding -->
             <div class="flex items-center gap-3">
                 <div class="w-12 h-12 rounded-xl bg-amber-950/50 p-1 border border-amber-500/30 flex items-center justify-center overflow-hidden shadow-lg shadow-amber-500/10">
                     <img src="logo.jpg" alt="Logo Cacaovalores" class="h-full w-full object-cover rounded-lg" onerror="this.src='https://via.placeholder.com/48?text=CV'">
@@ -122,14 +106,13 @@
                     <h1 class="text-xl font-extrabold tracking-tight text-white uppercase flex items-center gap-2">
                         CACAOVALORES 
                         <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
-                            <span class="w-2 h-2 rounded-full bg-emerald-400 live-dot"></span> EN VIVO NY
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 live-dot"></span> EN VIVO
                         </span>
                     </h1>
                     <p class="text-xs text-amberGold font-semibold tracking-wider">VALOR JUSTO · MERCADO TRANSPARENTE</p>
                 </div>
             </div>
 
-            <!-- Ticker Status Badge -->
             <div class="flex items-center gap-3 flex-wrap justify-center">
                 <div class="flex items-center gap-2 bg-cocoa-900/90 border border-cocoa-700/50 px-3 py-1.5 rounded-full text-xs">
                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 live-dot"></span>
@@ -140,7 +123,7 @@
                 <div class="flex items-center gap-2 bg-cocoa-900/90 border border-cocoa-700/50 px-3 py-1.5 rounded-full text-xs">
                     <i class="fa-solid fa-dollar-sign text-emerald-400"></i>
                     <span class="text-cocoa-200 font-medium">TRM Oficial:</span>
-                    <span id="headerTrmDisplay" class="font-bold text-emerald-400">$3,920 COP</span>
+                    <span id="headerTrmDisplay" class="font-bold text-emerald-400">Cargando...</span>
                 </div>
 
                 <button onclick="triggerManualSync()" class="px-3 py-1.5 bg-cocoa-700 hover:bg-cocoa-600 text-cocoa-100 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 active:scale-95 shadow">
@@ -153,7 +136,6 @@
 
     <main class="max-w-7xl mx-auto px-4 lg:px-8 space-y-6">
 
-        <!-- Regional Selector Banner -->
         <div class="cocoa-glass p-4 rounded-2xl border border-cocoa-700/30 flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-3 w-full md:w-auto">
                 <div class="p-3 bg-amberGold-500/20 text-amberGold-400 rounded-xl border border-amberGold-500/30">
@@ -172,7 +154,6 @@
                 </div>
             </div>
 
-            <!-- Presets de Calidad -->
             <div class="flex items-center gap-2 flex-wrap">
                 <span class="text-xs text-cocoa-400 font-medium">Preset Calidad:</span>
                 <button onclick="setQualityPreset('fino')" class="px-3 py-1.5 bg-cocoa-800 hover:bg-cocoa-700 text-xs text-amber-200 border border-cocoa-600 rounded-lg font-medium transition">
@@ -187,10 +168,8 @@
             </div>
         </div>
 
-        <!-- Layout 2 Columnas -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-            <!-- Columna Izquierda: Parámetros -->
             <div class="lg:col-span-5 space-y-5">
                 
                 <div class="cocoa-glass-card p-5 rounded-2xl space-y-4">
@@ -199,7 +178,7 @@
                             <i class="fa-solid fa-chart-line"></i> 1. Mercado Internacional & TRM
                         </h3>
                         <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30">
-                            ICE NY REAL
+                            TRM AUTO
                         </span>
                     </div>
 
@@ -229,11 +208,11 @@
                         </div>
                         <div class="relative">
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-cocoa-400 font-bold">$</span>
-                            <input type="number" id="trmInput" value="3920" step="1" oninput="calculateAll()"
+                            <input type="number" id="trmInput" value="4180" step="1" oninput="calculateAll()"
                                 class="w-full bg-cocoa-950/80 border border-cocoa-600/60 rounded-xl py-2.5 pl-8 pr-16 text-white font-bold text-lg focus:outline-none focus:border-amberGold-500 transition">
                             <span class="absolute inset-y-0 right-0 pr-3 flex items-center text-xs text-cocoa-400 font-semibold">COP</span>
                         </div>
-                        <input type="range" id="trmSlider" min="3000" max="5000" value="3920" step="1" oninput="syncInputs('trm')"
+                        <input type="range" id="trmSlider" min="3000" max="5000" value="4180" step="1" oninput="syncInputs('trm')"
                             class="w-full h-1.5 bg-cocoa-900 rounded-lg appearance-none cursor-pointer">
                     </div>
                 </div>
@@ -305,10 +284,8 @@
 
             </div>
 
-            <!-- Columna Derecha: Resultados y Gráfica -->
             <div class="lg:col-span-7 space-y-5">
 
-                <!-- GRÁFICA EN VIVO DE MERCADO -->
                 <div class="cocoa-glass-card p-5 rounded-3xl relative overflow-hidden border border-amberGold-500/30 space-y-3">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
@@ -320,7 +297,6 @@
                         </span>
                     </div>
 
-                    <!-- Contenedor SVG de la Gráfica -->
                     <div class="w-full h-44 relative mt-2">
                         <svg class="w-full h-full overflow-visible" viewBox="0 0 500 150" preserveAspectRatio="none">
                             <defs>
@@ -329,16 +305,12 @@
                                     <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.0" />
                                 </linearGradient>
                             </defs>
-                            <!-- Guías de fondo -->
                             <line x1="0" y1="30" x2="500" y2="30" stroke="rgba(210,168,134,0.08)" stroke-dasharray="4" />
                             <line x1="0" y1="75" x2="500" y2="75" stroke="rgba(210,168,134,0.08)" stroke-dasharray="4" />
                             <line x1="0" y1="120" x2="500" y2="120" stroke="rgba(210,168,134,0.08)" stroke-dasharray="4" />
                             
-                            <!-- Relleno de Área -->
                             <path id="chartAreaPath" fill="url(#chartGradient)" d="" />
-                            <!-- Línea principal -->
                             <path id="chartLinePath" fill="none" stroke="#f59e0b" stroke-width="3" class="svg-smooth-path" d="" />
-                            <!-- Punteo en Vivo -->
                             <circle id="chartLiveDot" cx="0" cy="0" r="6" fill="#34d399" stroke="#ffffff" stroke-width="2" class="live-chart-node" />
                         </svg>
                     </div>
@@ -350,13 +322,12 @@
                     </div>
                 </div>
 
-                <!-- CARDA PRINCIPAL DE LIQUIDACIÓN -->
                 <div class="cocoa-glass-card p-6 rounded-3xl relative overflow-hidden border-2 border-amberGold-500/40 amber-glow space-y-6">
                     <div class="flex items-center justify-between">
                         <span class="px-3 py-1 bg-amberGold-500/20 text-amberGold-400 border border-amberGold-500/40 text-xs font-extrabold uppercase tracking-wider rounded-full flex items-center gap-1.5">
                             <i class="fa-solid fa-coins"></i> Cotización Liquidación Colombia
                         </span>
-                        <span class="text-xs text-cocoa-300 font-mono" id="lastUpdatedTime">Sincronizado</span>
+                        <span class="text-xs text-cocoa-300 font-mono" id="lastUpdatedTime">Sincronizando...</span>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -367,10 +338,10 @@
                             </div>
                             <div>
                                 <div class="text-3xl md:text-4xl font-extrabold text-white tracking-tight" id="pricePerKgDisplay">
-                                    $17,265 <span class="text-sm font-normal text-cocoa-300">COP/kg</span>
+                                    $0 <span class="text-sm font-normal text-cocoa-300">COP/kg</span>
                                 </div>
                                 <div class="text-xs text-emerald-400 font-semibold mt-1" id="usdPerKgEquivalent">
-                                    ≈ $4.40 USD / kg
+                                    ≈ $0.00 USD / kg
                                 </div>
                             </div>
                         </div>
@@ -382,10 +353,10 @@
                             </div>
                             <div>
                                 <div class="text-2xl md:text-3xl font-black cocoa-gradient-text tracking-tight" id="pricePerCargaDisplay">
-                                    $2,158,125 <span class="text-xs font-normal text-cocoa-200">COP</span>
+                                    $0 <span class="text-xs font-normal text-cocoa-200">COP</span>
                                 </div>
                                 <div class="text-xs text-cocoa-300 font-medium mt-1" id="pricePerBultoDisplay">
-                                    Bulto (50kg): $863,250 COP
+                                    Bulto (50kg): $0 COP
                                 </div>
                             </div>
                         </div>
@@ -396,17 +367,17 @@
                             <span class="text-xs font-bold text-cocoa-200 uppercase tracking-wide">
                                 Total Cosecha Seleccionada (<span id="lotSummaryLabel">1 Carga / 125 kg</span>)
                             </span>
-                            <span class="text-xs text-amberGold-400 font-bold" id="totalLotUsd">≈ $550.50 USD</span>
+                            <span class="text-xs text-amberGold-400 font-bold" id="totalLotUsd">≈ $0.00 USD</span>
                         </div>
                         <div class="text-3xl font-black text-amberGold-400 flex items-baseline gap-2" id="totalLotCop">
-                            $2,158,125 <span class="text-sm font-semibold text-cocoa-300">COP Total</span>
+                            $0 <span class="text-sm font-semibold text-cocoa-300">COP Total</span>
                         </div>
                     </div>
 
                     <div class="space-y-1 text-xs text-cocoa-300 border-t border-cocoa-700/50 pt-3">
                         <div class="flex justify-between">
                             <span>Precio Bruto Internacional (Bolsa NY en COP):</span>
-                            <span id="grossInternationalCop" class="font-semibold text-cocoa-100">$20,556 COP / kg</span>
+                            <span id="grossInternationalCop" class="font-semibold text-cocoa-100">$0 COP / kg</span>
                         </div>
                         <div class="flex justify-between">
                             <span>Factor Regional de Pago Local:</span>
@@ -423,7 +394,6 @@
                     </button>
                 </div>
 
-                <!-- Tabla de Referencia -->
                 <div class="cocoa-glass-card p-5 rounded-2xl space-y-3">
                     <h3 class="font-bold text-cocoa-100 text-sm flex items-center gap-2">
                         <i class="fa-solid fa-table-list text-amberGold-400"></i> Tabla de Liquidación Rápida
@@ -431,19 +401,19 @@
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-center text-xs">
                         <div class="bg-cocoa-950/70 p-2.5 rounded-xl border border-cocoa-800">
                             <div class="text-cocoa-400">1 Kilogramo</div>
-                            <div class="font-bold text-amberGold-400 text-sm mt-0.5" id="table1kg">$17,265 COP</div>
+                            <div class="font-bold text-amberGold-400 text-sm mt-0.5" id="table1kg">$0 COP</div>
                         </div>
                         <div class="bg-cocoa-950/70 p-2.5 rounded-xl border border-cocoa-800">
                             <div class="text-cocoa-400">1 Bulto (50 kg)</div>
-                            <div class="font-bold text-amberGold-400 text-sm mt-0.5" id="table50kg">$863,250 COP</div>
+                            <div class="font-bold text-amberGold-400 text-sm mt-0.5" id="table50kg">$0 COP</div>
                         </div>
                         <div class="bg-cocoa-950/70 p-2.5 rounded-xl border border-cocoa-800">
                             <div class="text-cocoa-400">1 Carga (125 kg)</div>
-                            <div class="font-bold text-amberGold-400 text-sm mt-0.5" id="table125kg">$2,158,125 COP</div>
+                            <div class="font-bold text-amberGold-400 text-sm mt-0.5" id="table125kg">$0 COP</div>
                         </div>
                         <div class="bg-cocoa-950/70 p-2.5 rounded-xl border border-cocoa-800">
                             <div class="text-cocoa-400">1 Tonelada (1,000 kg)</div>
-                            <div class="font-bold text-amberGold-400 text-sm mt-0.5" id="table1000kg">$17.27M COP</div>
+                            <div class="font-bold text-amberGold-400 text-sm mt-0.5" id="table1000kg">$0M COP</div>
                         </div>
                     </div>
                 </div>
@@ -463,7 +433,6 @@
         <span>Cotización copiada al portapapeles</span>
     </div>
 
-    <!-- SCRIPT DE LÓGICA DE CÁLCULO, GRÁFICA Y ANIMACIÓN EN VIVO -->
     <script>
         const SUPABASE_URL = 'https://anmkioskzubmpzddisl.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_9bAQgfSRr2pc32uiq_N5Nw_Rg3puS1y'; 
@@ -473,7 +442,6 @@
             supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         }
 
-        // Historial para la gráfica (20 puntos iniciales)
         let chartData = Array(20).fill(5244);
         let baseNyPrice = 5244;
 
@@ -492,7 +460,7 @@
             
             const copPerCarga = netCopPerKg * 125;
             const copPerBulto = netCopPerKg * 50;
-            const usdPerKg = netCopPerKg / trmCop;
+            const usdPerKg = trmCop > 0 ? (netCopPerKg / trmCop) : 0;
 
             let totalKg = quantity;
             let unitLabel = "kg";
@@ -501,7 +469,7 @@
             else if (unit === 'ton') { totalKg = quantity * 1000; unitLabel = quantity === 1 ? "Tonelada" : "Toneladas"; }
 
             const totalLotCop = netCopPerKg * totalKg;
-            const totalLotUsd = totalLotCop / trmCop;
+            const totalLotUsd = trmCop > 0 ? (totalLotCop / trmCop) : 0;
 
             document.getElementById('headerNyPriceDisplay').textContent = `$${nyUsdMt.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD/MT`;
             document.getElementById('headerTrmDisplay').textContent = `$${Math.round(trmCop).toLocaleString('es-CO')} COP`;
@@ -528,12 +496,55 @@
             document.getElementById('table1000kg').textContent = `$${(netCopPerKg * 1000 / 1000000).toFixed(2)}M COP`;
         }
 
-        // DIBUJAR GRÁFICA SVG INTERACTIVA
+        // Cargar TRM real directamente de API pública
+        async function fetchLiveTrmDirectly() {
+            try {
+                const res = await fetch('https://co.dolarapi.com/v1/trm');
+                const data = await res.json();
+                if (data && data.valor) {
+                    const trmVal = Math.round(data.valor);
+                    document.getElementById('trmInput').value = trmVal;
+                    document.getElementById('trmSlider').value = trmVal;
+                    calculateAll();
+                }
+            } catch (err) {
+                console.log("Cargando TRM alternativa...", err);
+            }
+        }
+
+        // Cargar datos guardados en Supabase
+        async function loadLatestFromSupabase() {
+            if (!supabaseClient) return;
+            try {
+                const { data, error } = await supabaseClient
+                    .from('precios')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(1);
+
+                if (data && data.length > 0) {
+                    const latest = data[0];
+                    if (latest.precio_ny) {
+                        document.getElementById('nyCocoaInput').value = latest.precio_ny;
+                        document.getElementById('nyCocoaSlider').value = latest.precio_ny;
+                        baseNyPrice = latest.precio_ny;
+                    }
+                    if (latest.trm) {
+                        document.getElementById('trmInput').value = latest.trm;
+                        document.getElementById('trmSlider').value = latest.trm;
+                    }
+                    document.getElementById('lastUpdatedTime').textContent = `Actualizado: ${new Date(latest.created_at || Date.now()).toLocaleTimeString('es-CO')}`;
+                    calculateAll();
+                }
+            } catch (e) {
+                console.error("Error leyendo Supabase:", e);
+            }
+        }
+
         function updateSVGChart() {
             const min = Math.min(...chartData) - 5;
             const max = Math.max(...chartData) + 5;
             const range = max - min || 1;
-            
             const width = 500;
             const height = 150;
             const step = width / (chartData.length - 1);
@@ -544,7 +555,6 @@
             chartData.forEach((val, index) => {
                 const x = index * step;
                 const y = height - ((val - min) / range) * (height - 30) - 15;
-                
                 if (index === 0) {
                     pathD += `M ${x},${y} `;
                     areaD += `L ${x},${y} `;
@@ -552,7 +562,6 @@
                     pathD += `L ${x},${y} `;
                     areaD += `L ${x},${y} `;
                 }
-
                 if (index === chartData.length - 1) {
                     const dot = document.getElementById('chartLiveDot');
                     dot.setAttribute('cx', x);
@@ -581,12 +590,9 @@
             }
         }
 
-        // MOTOR DE MICRO-VARIACIÓN SEGUNDO A SEGUNDO (OPCIÓN 2)
         function startLiveMicroTicks() {
             setInterval(() => {
                 baseNyPrice = parseFloat(document.getElementById('nyCocoaInput').value) || 5244;
-                
-                // Micro-fluctuación realista (+/- 0.08%)
                 const delta = (Math.random() - 0.49) * (baseNyPrice * 0.0012);
                 const livePrice = baseNyPrice + delta;
 
@@ -629,7 +635,8 @@
         function triggerManualSync() {
             const icon = document.getElementById('syncIcon');
             icon.classList.add('animate-spin');
-            calculateAll();
+            fetchLiveTrmDirectly();
+            loadLatestFromSupabase();
             setTimeout(() => icon.classList.remove('animate-spin'), 600);
         }
 
@@ -668,7 +675,9 @@
             });
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('DOMContentLoaded', async () => {
+            await fetchLiveTrmDirectly();
+            await loadLatestFromSupabase();
             calculateAll();
             updateSVGChart();
             setupSupabaseRealtime();
