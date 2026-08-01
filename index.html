@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cacaovalores — Valor Justo · Mercado Transparente</title>
     
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -39,6 +40,7 @@
         }
     </script>
 
+    <!-- Google Fonts, FontAwesome & Supabase JS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -95,12 +97,14 @@
 </head>
 <body class="antialiased pb-12 selection:bg-amber-600 selection:text-white">
 
+    <!-- Header Navigation -->
     <header class="sticky top-0 z-50 cocoa-glass border-b border-cocoa-700/40 px-4 lg:px-8 py-3 mb-4">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
             
+            <!-- Logo & Branding -->
             <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-xl bg-amber-950/50 p-1 border border-amber-500/30 flex items-center justify-center overflow-hidden shadow-lg shadow-amber-500/10">
-                    <img src="logo.jpg" alt="Logo Cacaovalores" class="h-full w-full object-cover rounded-lg" onerror="this.src='https://via.placeholder.com/48?text=CV'">
+                <div class="h-14 w-auto p-1.5 rounded-xl bg-amber-950/60 border border-amber-500/30 flex items-center justify-center overflow-hidden shadow-lg shadow-amber-500/10">
+                    <img src="https://i.postimg.cc/vHwVhh0B/CACAO-JD.png" alt="Logo Cacaovalores" class="h-full w-auto object-contain rounded-lg">
                 </div>
                 <div>
                     <h1 class="text-xl font-extrabold tracking-tight text-white uppercase flex items-center gap-2">
@@ -113,6 +117,7 @@
                 </div>
             </div>
 
+            <!-- Ticker Status Badge -->
             <div class="flex items-center gap-3 flex-wrap justify-center">
                 <div class="flex items-center gap-2 bg-cocoa-900/90 border border-cocoa-700/50 px-3 py-1.5 rounded-full text-xs">
                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 live-dot"></span>
@@ -136,6 +141,7 @@
 
     <main class="max-w-7xl mx-auto px-4 lg:px-8 space-y-6">
 
+        <!-- Regional Selector Banner -->
         <div class="cocoa-glass p-4 rounded-2xl border border-cocoa-700/30 flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-3 w-full md:w-auto">
                 <div class="p-3 bg-amberGold-500/20 text-amberGold-400 rounded-xl border border-amberGold-500/30">
@@ -154,6 +160,7 @@
                 </div>
             </div>
 
+            <!-- Presets de Calidad -->
             <div class="flex items-center gap-2 flex-wrap">
                 <span class="text-xs text-cocoa-400 font-medium">Preset Calidad:</span>
                 <button onclick="setQualityPreset('fino')" class="px-3 py-1.5 bg-cocoa-800 hover:bg-cocoa-700 text-xs text-amber-200 border border-cocoa-600 rounded-lg font-medium transition">
@@ -168,8 +175,10 @@
             </div>
         </div>
 
+        <!-- Layout 2 Columnas -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
+            <!-- Columna Izquierda: Parámetros -->
             <div class="lg:col-span-5 space-y-5">
                 
                 <div class="cocoa-glass-card p-5 rounded-2xl space-y-4">
@@ -284,8 +293,10 @@
 
             </div>
 
+            <!-- Columna Derecha: Resultados y Gráfica -->
             <div class="lg:col-span-7 space-y-5">
 
+                <!-- GRÁFICA EN VIVO DE MERCADO -->
                 <div class="cocoa-glass-card p-5 rounded-3xl relative overflow-hidden border border-amberGold-500/30 space-y-3">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-2">
@@ -297,6 +308,7 @@
                         </span>
                     </div>
 
+                    <!-- Contenedor SVG de la Gráfica -->
                     <div class="w-full h-44 relative mt-2">
                         <svg class="w-full h-full overflow-visible" viewBox="0 0 500 150" preserveAspectRatio="none">
                             <defs>
@@ -322,6 +334,7 @@
                     </div>
                 </div>
 
+                <!-- CARDA PRINCIPAL DE LIQUIDACIÓN -->
                 <div class="cocoa-glass-card p-6 rounded-3xl relative overflow-hidden border-2 border-amberGold-500/40 amber-glow space-y-6">
                     <div class="flex items-center justify-between">
                         <span class="px-3 py-1 bg-amberGold-500/20 text-amberGold-400 border border-amberGold-500/40 text-xs font-extrabold uppercase tracking-wider rounded-full flex items-center gap-1.5">
@@ -394,6 +407,7 @@
                     </button>
                 </div>
 
+                <!-- Tabla de Referencia -->
                 <div class="cocoa-glass-card p-5 rounded-2xl space-y-3">
                     <h3 class="font-bold text-cocoa-100 text-sm flex items-center gap-2">
                         <i class="fa-solid fa-table-list text-amberGold-400"></i> Tabla de Liquidación Rápida
@@ -433,6 +447,7 @@
         <span>Cotización copiada al portapapeles</span>
     </div>
 
+    <!-- SCRIPT PRINCIPAL DE LÓGICA Y DÓLAR AUTOMÁTICO -->
     <script>
         const SUPABASE_URL = 'https://anmkioskzubmpzddisl.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_9bAQgfSRr2pc32uiq_N5Nw_Rg3puS1y'; 
@@ -496,7 +511,6 @@
             document.getElementById('table1000kg').textContent = `$${(netCopPerKg * 1000 / 1000000).toFixed(2)}M COP`;
         }
 
-        // Cargar TRM real directamente de API pública
         async function fetchLiveTrmDirectly() {
             try {
                 const res = await fetch('https://co.dolarapi.com/v1/trm');
@@ -512,7 +526,6 @@
             }
         }
 
-        // Cargar datos guardados en Supabase
         async function loadLatestFromSupabase() {
             if (!supabaseClient) return;
             try {
